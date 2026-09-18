@@ -10,7 +10,7 @@ from umbra.imputers.mar_chained_equations import MARChainedEquationsImputer, rub
 from umbra.imputers.pattern_mixture import PatternMixtureImputer
 
 
-def test_rubins_rules_basic():
+def test_rubins_rules_basic() -> None:
     # 5 imputations
     point_estimates = [10.0, 10.2, 9.8, 10.1, 9.9]
     variances = [0.25, 0.24, 0.26, 0.25, 0.25]
@@ -25,14 +25,14 @@ def test_rubins_rules_basic():
     assert pooled.degrees_of_freedom > 1.0
 
 
-def test_rubins_rules_single_imputation():
+def test_rubins_rules_single_imputation() -> None:
     pooled = rubins_rules([5.0], [0.5], alpha=0.05)
     assert pytest.approx(pooled.pooled_mean) == 5.0
     assert pytest.approx(pooled.total_variance) == 0.5
     assert pooled.between_variance == 0.0
 
 
-def test_rubins_rules_confidence_levels():
+def test_rubins_rules_confidence_levels() -> None:
     point_estimates = [5.0, 5.1, 4.9, 5.2, 4.8]
     variances = [0.2, 0.2, 0.2, 0.2, 0.2]
 
@@ -48,7 +48,7 @@ def test_rubins_rules_confidence_levels():
     assert width_95 > width_90 > width_80
 
 
-def test_multiple_draws_imputers():
+def test_multiple_draws_imputers() -> None:
     rng = np.random.RandomState(42)
     n = 100
     df = {"x": rng.randn(n), "y": rng.randn(n)}
@@ -84,7 +84,7 @@ def test_multiple_draws_imputers():
     assert all(not d.isna().any().any() for d in draws_heck)
 
 
-def test_heckman_rubin_pooled_ci_wider_than_single_plug_in():
+def test_heckman_rubin_pooled_ci_wider_than_single_plug_in() -> None:
     """Verify that Rubin-pooled 95% CI is strictly wider than single-imputation plug-in CI."""
     from benchmarks.dgps import generate_simulation_dataset
     from benchmarks.simulation_runner import evaluate_imputer_replication
@@ -124,7 +124,7 @@ def test_heckman_rubin_pooled_ci_wider_than_single_plug_in():
     )
 
 
-def test_rubins_rules_input_validation():
+def test_rubins_rules_input_validation() -> None:
     with pytest.raises(ValueError, match="rubins_rules requires at least M=1"):
         rubins_rules([], [])
     with pytest.raises(ValueError, match="Length mismatch"):

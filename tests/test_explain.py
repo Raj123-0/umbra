@@ -14,13 +14,13 @@ from umbra.explain import (
 from umbra.sensitivity.grid_analysis import SensitivityReport, TippingPoint
 
 
-def test_format_risk_badge():
+def test_format_risk_badge() -> None:
     assert "HIGH" in format_risk_badge("HIGH")
     assert "MEDIUM" in format_risk_badge("MEDIUM")
     assert "LOW" in format_risk_badge("LOW")
 
 
-def test_explain_diagnostics_all_levels():
+def test_explain_diagnostics_all_levels() -> None:
     reports = {
         "col_high": MNARRiskReport(
             target_column="col_high",
@@ -89,7 +89,7 @@ def test_explain_diagnostics_all_levels():
     assert "# Umbra Missingness Diagnostics Audit" in empty_md
 
 
-def test_explain_sensitivity_fragile_and_robust():
+def test_explain_sensitivity_fragile_and_robust() -> None:
     df_grid = pd.DataFrame(
         {
             "delta": [-1.0, 0.0, 1.0],

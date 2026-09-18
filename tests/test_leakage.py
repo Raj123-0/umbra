@@ -16,7 +16,7 @@ from umbra.api import UmbraImputer
 from umbra.diagnostics.shadow_variable_finder import find_shadow_variables
 
 
-def test_diagnostics_contain_no_ground_truth_leakage():
+def test_diagnostics_contain_no_ground_truth_leakage() -> None:
     """Verify diagnostics only access observed values and never require or inspect ground truth."""
     rng = np.random.RandomState(42)
     n = 200
@@ -40,7 +40,7 @@ def test_diagnostics_contain_no_ground_truth_leakage():
     assert not hasattr(report, "true_mean")
 
 
-def test_train_test_split_isolation():
+def test_train_test_split_isolation() -> None:
     """Verify that fit(X_train) and transform(X_test) maintain strict separation without test leakage."""
     rng = np.random.RandomState(42)
     n = 300
@@ -73,7 +73,7 @@ def test_train_test_split_isolation():
     assert len(test_imputed) == len(test_df)
 
 
-def test_shadow_variable_outcome_leakage_boundary():
+def test_shadow_variable_outcome_leakage_boundary() -> None:
     """Verify find_shadow_variables computes correlations strictly on observed rows."""
     rng = np.random.RandomState(42)
     n = 200
@@ -96,7 +96,7 @@ def test_shadow_variable_outcome_leakage_boundary():
         assert np.isclose(cand.direct_outcome_correlation, expected_r, atol=1e-5)
 
 
-def test_benchmark_simulation_dataset_isolation():
+def test_benchmark_simulation_dataset_isolation() -> None:
     """Verify simulation datasets clearly separate complete data from observed data."""
     from benchmarks.dgps import generate_simulation_dataset
 

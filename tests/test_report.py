@@ -17,7 +17,7 @@ def benchmarks():
     return generate_benchmark_battery(n_samples=600, random_state=42)
 
 
-def test_diagnose_mcar(benchmarks):
+def test_diagnose_mcar(benchmarks) -> None:
     df_mcar = benchmarks["MCAR"].data_observed.copy()
     report = umbra.diagnose(df_mcar, target_cols=["income"])
 
@@ -55,7 +55,7 @@ def test_diagnose_mcar(benchmarks):
     assert "Umbra Diagnostic Audit" in html
 
 
-def test_diagnose_mnar_with_sensitivity(benchmarks):
+def test_diagnose_mnar_with_sensitivity(benchmarks) -> None:
     df_mnar = benchmarks["MNAR_HIGH"].data_observed.copy()
     report = umbra.diagnose(
         df_mnar,
@@ -73,7 +73,7 @@ def test_diagnose_mnar_with_sensitivity(benchmarks):
     assert len(report.warnings) > 0
 
 
-def test_diagnose_numpy_array():
+def test_diagnose_numpy_array() -> None:
     rng = np.random.RandomState(42)
     X = rng.randn(100, 4)
     X[0:20, 0] = np.nan

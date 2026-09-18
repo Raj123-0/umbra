@@ -13,7 +13,7 @@ from umbra.imputers.pattern_mixture import PatternMixtureImputer
 from umbra.sensitivity.grid_analysis import run_sensitivity_grid
 
 
-def test_api_fitted_explain_and_feature_names():
+def test_api_fitted_explain_and_feature_names() -> None:
     rng = np.random.RandomState(42)
     n = 100
     df = pd.DataFrame({"x": rng.randn(n), "y": rng.randn(n)})
@@ -35,7 +35,7 @@ def test_api_fitted_explain_and_feature_names():
     assert "y" in diags
 
 
-def test_api_pattern_mixture_in_auto_transform():
+def test_api_pattern_mixture_in_auto_transform() -> None:
     # Force pattern_mixture in auto transform
     rng = np.random.RandomState(42)
     n = 100
@@ -48,7 +48,7 @@ def test_api_pattern_mixture_in_auto_transform():
     assert not res["income"].isna().any()
 
 
-def test_pattern_mixture_edge_cases():
+def test_pattern_mixture_edge_cases() -> None:
     rng = np.random.RandomState(42)
     n = 50
     df = pd.DataFrame({"x": rng.randn(n), "y": rng.randn(n)})
@@ -93,7 +93,7 @@ def test_pattern_mixture_edge_cases():
     assert len(mult) >= 1
 
 
-def test_heckman_edge_cases():
+def test_heckman_edge_cases() -> None:
     rng = np.random.RandomState(42)
     n = 80
     z = rng.randn(n)
@@ -125,7 +125,7 @@ def test_heckman_edge_cases():
     assert res_arr is not None
 
 
-def test_sensitivity_edge_cases(tmp_path):
+def test_sensitivity_edge_cases(tmp_path) -> None:
     rng = np.random.RandomState(42)
     n = 100
     df = pd.DataFrame({"x": rng.randn(n), "y": rng.randn(n), "outcome": rng.randn(n)})
@@ -157,7 +157,7 @@ def test_sensitivity_edge_cases(tmp_path):
     assert rep2 is not None
 
 
-def test_diagnostic_report_summary_and_export(tmp_path):
+def test_diagnostic_report_summary_and_export(tmp_path) -> None:
     rng = np.random.RandomState(42)
     n = 60
     df = pd.DataFrame({"x": rng.randn(n), "income": rng.randn(n)})

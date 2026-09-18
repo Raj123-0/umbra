@@ -18,7 +18,7 @@ def benchmarks():
     return generate_benchmark_battery(n_samples=1000, random_state=42)
 
 
-def test_mar_chained_equations(benchmarks):
+def test_mar_chained_equations(benchmarks) -> None:
     data = benchmarks["MAR"].data_observed.copy()
     assert data["income"].isna().any()
 
@@ -36,7 +36,7 @@ def test_mar_chained_equations(benchmarks):
     assert not br_res.isna().any().any()
 
 
-def test_heckman_selection_imputer(benchmarks):
+def test_heckman_selection_imputer(benchmarks) -> None:
     bench = benchmarks["MNAR_MEDIUM"]
     data = bench.data_observed.copy()
     obs_mean = data["income"].mean()
@@ -59,7 +59,7 @@ def test_heckman_selection_imputer(benchmarks):
     )
 
 
-def test_pattern_mixture_delta_shift(benchmarks):
+def test_pattern_mixture_delta_shift(benchmarks) -> None:
     data = benchmarks["MNAR_LOW"].data_observed.copy()
 
     pm_base = PatternMixtureImputer(delta=0.0, target_cols=["income"], random_state=42)
@@ -78,7 +78,7 @@ def test_pattern_mixture_delta_shift(benchmarks):
 
 
 @pytest.mark.skipif(not HAS_TORCH, reason="PyTorch not installed")
-def test_deep_generative_imputer():
+def test_deep_generative_imputer() -> None:
     X = pd.DataFrame(
         {
             "a": np.random.randn(200),
@@ -93,7 +93,7 @@ def test_deep_generative_imputer():
     assert not X_imp.isna().any().any()
 
 
-def test_heckman_bootstrap_se_variance_inflation():
+def test_heckman_bootstrap_se_variance_inflation() -> None:
     """Verify that bootstrap SEs account for first-stage estimation uncertainty and are larger than naive OLS SEs."""
     rng = np.random.RandomState(42)
     N = 350
@@ -133,7 +133,7 @@ def test_heckman_bootstrap_se_variance_inflation():
     )
 
 
-def test_heckman_ridge_fallback_warning_and_nans():
+def test_heckman_ridge_fallback_warning_and_nans() -> None:
     """Verify that HeckmanSEWarning is emitted and std_errors are NaNs when design matrix is rank-deficient."""
     rng = np.random.RandomState(42)
     N = 100
@@ -159,7 +159,7 @@ def test_heckman_ridge_fallback_warning_and_nans():
     assert np.all(np.isnan(se_sing)), f"Expected all NaN std_errors, got {se_sing}"
 
 
-def test_heckman_fit_transform_multiple():
+def test_heckman_fit_transform_multiple() -> None:
     rng = np.random.RandomState(42)
     n = 200
     df = pd.DataFrame({"x": rng.randn(n), "z": rng.randn(n), "y": rng.randn(n)})

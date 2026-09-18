@@ -14,7 +14,7 @@ def benchmarks():
     return generate_benchmark_battery(n_samples=800, random_state=42)
 
 
-def test_router_mcar_no_false_high_risk(benchmarks):
+def test_router_mcar_no_false_high_risk(benchmarks) -> None:
     """
     Critical requirement: Column naming heuristics must NOT override
     statistically clear MCAR data.
@@ -26,7 +26,7 @@ def test_router_mcar_no_false_high_risk(benchmarks):
     assert report.composite_score < 0.45
 
 
-def test_router_mar_classification(benchmarks):
+def test_router_mar_classification(benchmarks) -> None:
     df_mar = benchmarks["MAR"].data_observed.copy()
     report = assess_mnar_risk(df_mar, target_col="income")
     # MAR exhibits covariate shifts but Little's test rejects MCAR
@@ -34,14 +34,14 @@ def test_router_mar_classification(benchmarks):
     assert report.risk_level in ("LOW", "MEDIUM")
 
 
-def test_router_mnar_high_classification(benchmarks):
+def test_router_mnar_high_classification(benchmarks) -> None:
     df_mnar = benchmarks["MNAR_HIGH"].data_observed.copy()
     report = assess_mnar_risk(df_mnar, target_col="income")
     assert report.risk_level == "HIGH"
     assert report.composite_score >= 0.50
 
 
-def test_auto_strategy_selection(benchmarks):
+def test_auto_strategy_selection(benchmarks) -> None:
     # Case 1: MNAR with shadow column -> Heckman
     df_mnar = benchmarks["MNAR_MEDIUM"].data_observed.copy()
     imp_heck = UmbraImputer(
@@ -72,7 +72,7 @@ def test_auto_strategy_selection(benchmarks):
     assert imp_mcar.strategy_map_["income"] == "mar"
 
 
-def test_diagnose_dataframe_all_columns(benchmarks):
+def test_diagnose_dataframe_all_columns(benchmarks) -> None:
     df = benchmarks["MNAR_LOW"].data_observed.copy()
     reports = diagnose_dataframe(df)
     assert isinstance(reports, dict)
@@ -82,7 +82,7 @@ def test_diagnose_dataframe_all_columns(benchmarks):
         assert rep.risk_level in ("LOW", "MEDIUM", "HIGH")
 
 
-def test_router_strict_dispatch_and_expected_field():
+def test_router_strict_dispatch_and_expected_field() -> None:
     """Verify that evaluate_single_routing returns expected_dispatch and adheres to strict correctness."""
     from benchmarks.router_benchmark import evaluate_single_routing
 
@@ -98,7 +98,7 @@ def test_router_strict_dispatch_and_expected_field():
     assert isinstance(res_mnar["is_correct"], bool)
 
 
-def test_router_tail_triggered_only_routes_to_medium():
+def test_router_tail_triggered_only_routes_to_medium() -> None:
     """Verify STAT 9.1: tail_triggered alone without covariate shifts routes to MEDIUM."""
     import numpy as np
     import pandas as pd
