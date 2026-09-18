@@ -27,7 +27,7 @@ def benchmarks():
     return generate_benchmark_battery(n_samples=500, random_state=42)
 
 
-def test_plot_missingness_matrix(benchmarks, tmp_path: Path):
+def test_plot_missingness_matrix(benchmarks, tmp_path: Path) -> None:
     df = benchmarks["MAR"].data_observed
     out_file = tmp_path / "matrix.png"
     fig = plot_missingness_matrix(df, max_rows=50, save_path=out_file)
@@ -36,7 +36,7 @@ def test_plot_missingness_matrix(benchmarks, tmp_path: Path):
     plt.close(fig)
 
 
-def test_plot_covariate_shifts(benchmarks, tmp_path: Path):
+def test_plot_covariate_shifts(benchmarks, tmp_path: Path) -> None:
     df = benchmarks["MAR"].data_observed
     pat = analyze_missingness_patterns(df)
     out_file = tmp_path / "shifts.png"
@@ -46,7 +46,7 @@ def test_plot_covariate_shifts(benchmarks, tmp_path: Path):
     plt.close(fig)
 
 
-def test_plot_sensitivity_curve(benchmarks, tmp_path: Path):
+def test_plot_sensitivity_curve(benchmarks, tmp_path: Path) -> None:
     df = benchmarks["MNAR_HIGH"].data_observed
     sens = run_sensitivity_grid(df, target_column="income", random_state=42)
     out_file = tmp_path / "sens.png"
@@ -56,7 +56,7 @@ def test_plot_sensitivity_curve(benchmarks, tmp_path: Path):
     plt.close(fig)
 
 
-def test_plot_diagnostic_evidence(benchmarks, tmp_path: Path):
+def test_plot_diagnostic_evidence(benchmarks, tmp_path: Path) -> None:
     df = benchmarks["MNAR_HIGH"].data_observed
     report = assess_mnar_risk(df, target_col="income")
     out_file = tmp_path / "evidence.png"
@@ -66,7 +66,7 @@ def test_plot_diagnostic_evidence(benchmarks, tmp_path: Path):
     plt.close(fig)
 
 
-def test_plot_router_confusion_matrix(tmp_path: Path):
+def test_plot_router_confusion_matrix(tmp_path: Path) -> None:
     data = np.array([[0.95, 0.05, 0.00], [0.10, 0.85, 0.05], [0.00, 0.15, 0.85]])
     df_cm = pd.DataFrame(
         data,

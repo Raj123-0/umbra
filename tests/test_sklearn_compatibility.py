@@ -22,7 +22,7 @@ def benchmarks():
     return generate_benchmark_battery(n_samples=1000, random_state=42)
 
 
-def test_umbra_imputer_fit_transform(benchmarks):
+def test_umbra_imputer_fit_transform(benchmarks) -> None:
     data = benchmarks["MAR"].data_observed.copy()
     imputer = UmbraImputer(strategy="mar", random_state=42)
     imputer.fit(data)
@@ -32,7 +32,7 @@ def test_umbra_imputer_fit_transform(benchmarks):
     assert len(res) == len(data)
 
 
-def test_umbra_imputer_auto_strategy(benchmarks):
+def test_umbra_imputer_auto_strategy(benchmarks) -> None:
     data = benchmarks["MNAR_MEDIUM"].data_observed.copy()
     imputer = UmbraImputer(
         strategy="auto",
@@ -48,7 +48,7 @@ def test_umbra_imputer_auto_strategy(benchmarks):
     assert imputer.get_sensitivity("income") is not None
 
 
-def test_pipeline_integration(benchmarks):
+def test_pipeline_integration(benchmarks) -> None:
     data = benchmarks["MNAR_LOW"].data_observed.copy()
     y = np.random.randn(len(data))
 
@@ -65,7 +65,7 @@ def test_pipeline_integration(benchmarks):
     assert not np.isnan(preds).any()
 
 
-def test_numpy_array_input():
+def test_numpy_array_input() -> None:
     X = np.array(
         [
             [1.0, 2.0, 3.0],
@@ -81,7 +81,7 @@ def test_numpy_array_input():
     assert not np.isnan(X_imp).any()
 
 
-def test_explain_and_get_sensitivity_not_fitted():
+def test_explain_and_get_sensitivity_not_fitted() -> None:
     imputer = UmbraImputer()
     with pytest.raises(NotFittedError):
         imputer.explain()
@@ -93,7 +93,7 @@ def test_explain_and_get_sensitivity_not_fitted():
         imputer.transform(np.array([[1.0, 2.0]]))
 
 
-def test_sub_imputers_not_fitted_error():
+def test_sub_imputers_not_fitted_error() -> None:
     X_dummy = np.array([[1.0, 2.0], [np.nan, 3.0]])
     imputers = [
         HeckmanSelectionImputer(),
@@ -108,7 +108,7 @@ def test_sub_imputers_not_fitted_error():
             imp.get_feature_names_out()
 
 
-def test_feature_dimension_mismatch_error():
+def test_feature_dimension_mismatch_error() -> None:
     df_fit = pd.DataFrame({"a": [1.0, 2.0, np.nan], "b": [3.0, 4.0, 5.0], "c": [6.0, 7.0, 8.0]})
     df_wrong_dim = pd.DataFrame({"a": [1.0, 2.0], "b": [3.0, 4.0]})
 
@@ -126,7 +126,7 @@ def test_feature_dimension_mismatch_error():
             est.transform(df_wrong_dim)
 
 
-def test_feature_names_mismatch_error():
+def test_feature_names_mismatch_error() -> None:
     df_fit = pd.DataFrame({"col_x": [1.0, 2.0, np.nan], "col_y": [3.0, 4.0, 5.0]})
     df_wrong_names = pd.DataFrame({"wrong_1": [1.0, 2.0, np.nan], "wrong_2": [3.0, 4.0, 5.0]})
 
@@ -136,7 +136,7 @@ def test_feature_names_mismatch_error():
         imputer.transform(df_wrong_names)
 
 
-def test_get_feature_names_out_protocol():
+def test_get_feature_names_out_protocol() -> None:
     # 1. Fit with DataFrame
     df = pd.DataFrame({"feature_a": [1.0, np.nan, 3.0], "feature_b": [4.0, 5.0, 6.0]})
     imputer = UmbraImputer(strategy="mar", run_sensitivity=False, random_state=42)

@@ -30,14 +30,14 @@ def sample_csv(tmp_path: Path) -> Path:
     return csv_file
 
 
-def test_cli_version():
+def test_cli_version() -> None:
     runner = CliRunner()
     result = runner.invoke(main, ["--version"])
     assert result.exit_code == 0
     assert "0.2.0" in result.output
 
 
-def test_cli_diagnose(sample_csv: Path, tmp_path: Path):
+def test_cli_diagnose(sample_csv: Path, tmp_path: Path) -> None:
     runner = CliRunner()
     out_md = tmp_path / "report.md"
     result = runner.invoke(main, ["diagnose", str(sample_csv), "-m", str(out_md)])
@@ -48,7 +48,7 @@ def test_cli_diagnose(sample_csv: Path, tmp_path: Path):
     assert "income" in content
 
 
-def test_cli_impute_auto(sample_csv: Path, tmp_path: Path):
+def test_cli_impute_auto(sample_csv: Path, tmp_path: Path) -> None:
     runner = CliRunner()
     out_csv = tmp_path / "imputed.csv"
     sens_csv = tmp_path / "sensitivity.csv"
@@ -71,7 +71,7 @@ def test_cli_impute_auto(sample_csv: Path, tmp_path: Path):
     assert not df_imp["income"].isna().any()
 
 
-def test_cli_diagnose_no_missing(tmp_path: Path):
+def test_cli_diagnose_no_missing(tmp_path: Path) -> None:
     runner = CliRunner()
     df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
     csv_file = tmp_path / "complete.csv"
@@ -81,19 +81,19 @@ def test_cli_diagnose_no_missing(tmp_path: Path):
     assert "No missing values found" in result.output
 
 
-def test_cli_diagnose_bad_file(tmp_path: Path):
+def test_cli_diagnose_bad_file(tmp_path: Path) -> None:
     runner = CliRunner()
     result = runner.invoke(main, ["diagnose", str(tmp_path / "nonexistent.csv")])
     assert result.exit_code != 0
 
 
-def test_cli_impute_bad_file(tmp_path: Path):
+def test_cli_impute_bad_file(tmp_path: Path) -> None:
     runner = CliRunner()
     result = runner.invoke(main, ["impute", str(tmp_path / "nonexistent.csv")])
     assert result.exit_code != 0
 
 
-def test_cli_impute_sensitivity_and_default_output(tmp_path: Path):
+def test_cli_impute_sensitivity_and_default_output(tmp_path: Path) -> None:
     runner = CliRunner()
     rng = np.random.RandomState(42)
     n = 200

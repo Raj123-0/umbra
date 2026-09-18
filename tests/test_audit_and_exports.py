@@ -13,7 +13,7 @@ from umbra.diagnostics.shadow_variable_finder import find_shadow_variables
 from umbra.sensitivity.grid_analysis import TippingPoint
 
 
-def test_report_summary_and_properties():
+def test_report_summary_and_properties() -> None:
     rng = np.random.RandomState(42)
     n = 200
     df = pd.DataFrame(
@@ -41,7 +41,7 @@ def test_report_summary_and_properties():
     assert len(report.missing_rates) == 2
 
 
-def test_shadow_variable_candidate_methods():
+def test_shadow_variable_candidate_methods() -> None:
     rng = np.random.RandomState(42)
     n = 200
     z = rng.randn(n)
@@ -72,7 +72,7 @@ def test_shadow_variable_candidate_methods():
         assert isinstance(cand.rationale, str)
 
 
-def test_pattern_reporting():
+def test_pattern_reporting() -> None:
     rng = np.random.RandomState(42)
     n = 150
     df = pd.DataFrame(
@@ -101,7 +101,7 @@ def test_pattern_reporting():
     assert isinstance(shift.to_dict(), dict)
 
 
-def test_tipping_point_dataclass():
+def test_tipping_point_dataclass() -> None:
     tp = TippingPoint(
         metric_name="sign_flip",
         tipping_delta=0.85,
@@ -115,14 +115,14 @@ def test_tipping_point_dataclass():
     assert d["original_value"] == 2.4
 
 
-def test_umbra_imputer_invalid_strategy():
+def test_umbra_imputer_invalid_strategy() -> None:
     imputer = UmbraImputer(strategy="non_existent_strategy")
     with pytest.raises(ValueError, match="Invalid strategy"):
         df = pd.DataFrame({"a": [1.0, 2.0, np.nan], "b": [2.0, 3.0, 4.0]})
         imputer.fit(df)
 
 
-def test_deep_generative_imputer_direct():
+def test_deep_generative_imputer_direct() -> None:
     from umbra.imputers.deep_generative_mnar import DeepGenerativeMNARImputer
 
     rng = np.random.RandomState(42)

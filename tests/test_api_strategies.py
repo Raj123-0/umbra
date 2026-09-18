@@ -8,7 +8,7 @@ import pandas as pd
 from umbra.api import UmbraImputer
 
 
-def test_umbra_explicit_heckman_strategy():
+def test_umbra_explicit_heckman_strategy() -> None:
     rng = np.random.RandomState(42)
     n = 200
     df = pd.DataFrame({"x": rng.randn(n), "z": rng.randn(n), "y": rng.randn(n)})
@@ -20,7 +20,7 @@ def test_umbra_explicit_heckman_strategy():
     assert imp.strategy_map_["y"] == "heckman"
 
 
-def test_umbra_explicit_pattern_mixture_strategy():
+def test_umbra_explicit_pattern_mixture_strategy() -> None:
     rng = np.random.RandomState(42)
     n = 150
     df = pd.DataFrame({"x": rng.randn(n), "y": rng.randn(n)})
@@ -32,7 +32,7 @@ def test_umbra_explicit_pattern_mixture_strategy():
     assert imp.strategy_map_["y"] == "pattern_mixture"
 
 
-def test_fit_transform_multiple_returns_list():
+def test_fit_transform_multiple_returns_list() -> None:
     rng = np.random.RandomState(42)
     df = pd.DataFrame({"x": rng.randn(100), "y": rng.randn(100)})
     df.loc[:20, "y"] = np.nan
@@ -44,7 +44,7 @@ def test_fit_transform_multiple_returns_list():
         assert not res["y"].isna().any()
 
 
-def test_fit_transform_multiple_n1_returns_singleton_list():
+def test_fit_transform_multiple_n1_returns_singleton_list() -> None:
     rng = np.random.RandomState(42)
     df = pd.DataFrame({"x": rng.randn(50), "y": rng.randn(50)})
     df.loc[:10, "y"] = np.nan
@@ -55,7 +55,7 @@ def test_fit_transform_multiple_n1_returns_singleton_list():
     assert not results[0]["y"].isna().any()
 
 
-def test_fit_transform_multiple_auto_strategy():
+def test_fit_transform_multiple_auto_strategy() -> None:
     rng = np.random.RandomState(42)
     n = 300
     z = rng.randn(n)

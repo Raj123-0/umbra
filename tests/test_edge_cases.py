@@ -34,7 +34,7 @@ from umbra.imputers.mar_chained_equations import MARChainedEquationsImputer
 from umbra.imputers.pattern_mixture import PatternMixtureImputer
 
 
-def test_empty_dataset():
+def test_empty_dataset() -> None:
     """1. Empty dataset (0 rows, 0 cols or 0 rows, N cols)."""
     df_empty = pd.DataFrame()
     diag = diagnose(df_empty)
@@ -46,7 +46,7 @@ def test_empty_dataset():
     assert df_imp.empty
 
 
-def test_one_row_dataset():
+def test_one_row_dataset() -> None:
     """2. One-row dataset: raises informative ValueError for Little's test."""
     df_one = pd.DataFrame({"x": [np.nan], "y": [1.0]})
     with pytest.raises(ValueError, match="Insufficient data dimensions"):
@@ -57,7 +57,7 @@ def test_one_row_dataset():
         imp.fit(df_one)
 
 
-def test_tiny_dataset():
+def test_tiny_dataset() -> None:
     """3. Tiny dataset (3-5 rows) should run without throwing index/dimension exceptions."""
     df_tiny = pd.DataFrame(
         {
@@ -71,7 +71,7 @@ def test_tiny_dataset():
     assert len(df_imp) == 4
 
 
-def test_all_missing_column():
+def test_all_missing_column() -> None:
     """4. 100% missing column handled gracefully."""
     df = pd.DataFrame(
         {
@@ -87,7 +87,7 @@ def test_all_missing_column():
     assert not df_imp["valid"].isna().any()
 
 
-def test_almost_all_missing_column():
+def test_almost_all_missing_column() -> None:
     """5. Almost-all-missing column (95% NaN)."""
     rng = np.random.RandomState(42)
     n = 100
@@ -99,7 +99,7 @@ def test_almost_all_missing_column():
     assert not df_imp["y"].isna().any()
 
 
-def test_constant_column_zero_variance():
+def test_constant_column_zero_variance() -> None:
     """6. Handle columns with zero variance without division by zero."""
     df = pd.DataFrame(
         {
@@ -116,7 +116,7 @@ def test_constant_column_zero_variance():
     assert not df_imp["var"].isna().any()
 
 
-def test_duplicate_columns():
+def test_duplicate_columns() -> None:
     """7. Duplicate column names and identical values handled."""
     rng = np.random.RandomState(42)
     vals = rng.randn(30)
@@ -128,7 +128,7 @@ def test_duplicate_columns():
     assert not df_imp["y"].isna().any()
 
 
-def test_highly_correlated_columns():
+def test_highly_correlated_columns() -> None:
     """8. Highly correlated columns (collinearity r > 0.9999)."""
     rng = np.random.RandomState(42)
     base = rng.randn(50)
@@ -146,7 +146,7 @@ def test_highly_correlated_columns():
     assert not np.isnan(res.p_value)
 
 
-def test_singular_matrices():
+def test_singular_matrices() -> None:
     """9. Singular rank-deficient matrices stabilized by regularized EM."""
     rng = np.random.RandomState(42)
     X = rng.normal(0, 1, size=(40, 10))
@@ -160,7 +160,7 @@ def test_singular_matrices():
     assert diag.mcar.statistic >= 0.0
 
 
-def test_nan_inf_values():
+def test_nan_inf_values() -> None:
     """10. Dataset containing Inf or extreme values handled safely."""
     df = pd.DataFrame(
         {
@@ -172,7 +172,7 @@ def test_nan_inf_values():
     assert diag.overall_missing_rate > 0.0
 
 
-def test_extreme_values():
+def test_extreme_values() -> None:
     """11. Extreme values with large scales or underflows."""
     df = pd.DataFrame(
         {
@@ -186,7 +186,7 @@ def test_extreme_values():
     assert not df_imp["x"].isna().any()
 
 
-def test_weak_instrument_warning():
+def test_weak_instrument_warning() -> None:
     """12. Weak instrument (F <= 10) emits WeakInstrumentWarning."""
     rng = np.random.RandomState(42)
     n = 200
@@ -209,7 +209,7 @@ def test_weak_instrument_warning():
         assert has_weak_warn, "Expected WeakInstrumentWarning when F <= 10"
 
 
-def test_failed_regression_fallback():
+def test_failed_regression_fallback() -> None:
     """13. Insufficient degrees of freedom in regression falls back cleanly."""
     df = pd.DataFrame(
         {
@@ -223,7 +223,7 @@ def test_failed_regression_fallback():
     assert not df_imp["target"].isna().any()
 
 
-def test_non_convergence_max_iter():
+def test_non_convergence_max_iter() -> None:
     """14. Non-convergence / early stopping at max_iter returns best estimate."""
     rng = np.random.RandomState(42)
     df = pd.DataFrame(rng.randn(60, 4), columns=["a", "b", "c", "d"])
@@ -235,7 +235,7 @@ def test_non_convergence_max_iter():
     assert not df_imp.isna().any().any()
 
 
-def test_categorical_variables_type_error():
+def test_categorical_variables_type_error() -> None:
     """15. Categorical/string columns in UmbraImputer raise clear TypeError."""
     df_complete_cat = pd.DataFrame(
         {
@@ -258,7 +258,7 @@ def test_categorical_variables_type_error():
         imp.fit(df_cat_miss)
 
 
-def test_mixed_numerical_categorical_diagnose():
+def test_mixed_numerical_categorical_diagnose() -> None:
     """16. Mixed numerical and categorical data in diagnose() succeeds cleanly."""
     df = pd.DataFrame(
         {

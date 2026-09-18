@@ -14,7 +14,7 @@ from benchmarks.dgps import generate_simulation_dataset
 from umbra.api import UmbraImputer
 
 
-def test_negative_control_noisy_mcar():
+def test_negative_control_noisy_mcar() -> None:
     """Verify that noisy MCAR data does not trigger false positive MNAR escalation."""
     rng = np.random.RandomState(123)
     n = 1000
@@ -39,7 +39,7 @@ def test_negative_control_noisy_mcar():
     assert risk in ("LOW", "MEDIUM"), f"Expected LOW/MEDIUM risk for MCAR, got {risk}"
 
 
-def test_negative_control_strong_mar():
+def test_negative_control_strong_mar() -> None:
     """Verify that strong MAR with pronounced covariate shifts routes to MICE, NOT selection models."""
     sim = generate_simulation_dataset(
         mechanism="MAR",
@@ -65,7 +65,7 @@ def test_negative_control_strong_mar():
     assert risk in ("LOW", "MEDIUM"), f"Expected non-HIGH risk for MAR, got {risk}"
 
 
-def test_negative_control_weak_mnar_graceful_handling():
+def test_negative_control_weak_mnar_graceful_handling() -> None:
     """Verify that subtle MNAR signals are imputed without numerical failure or variance explosion."""
     sim = generate_simulation_dataset(
         mechanism="MNAR_WEAK_SIGNAL",

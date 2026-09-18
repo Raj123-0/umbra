@@ -5,7 +5,7 @@ Smoke tests for benchmark runner and scaling modules.
 from benchmarks.performance_scaling import benchmark_runtime_vs_dimension, benchmark_runtime_vs_n
 
 
-def test_performance_scaling_smoke():
+def test_performance_scaling_smoke() -> None:
     df_n = benchmark_runtime_vs_n(sample_sizes=[50, 100], n_features=3, random_state=42)
     assert len(df_n) == 2
     assert "N" in df_n.columns

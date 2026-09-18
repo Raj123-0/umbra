@@ -19,7 +19,7 @@ from umbra.imputers.mar_chained_equations import rubins_rules
 from umbra.sensitivity.grid_analysis import run_sensitivity_grid
 
 
-def test_littles_test_mathematical_invariants():
+def test_littles_test_mathematical_invariants() -> None:
     rng = np.random.RandomState(42)
     n = 200
     df = pd.DataFrame(
@@ -42,7 +42,7 @@ def test_littles_test_mathematical_invariants():
     assert isinstance(res.degrees_of_freedom, int)
 
 
-def test_rubins_rules_variance_invariants():
+def test_rubins_rules_variance_invariants() -> None:
     # Invariant: Total variance T = U_bar + (1 + 1/M)*B >= U_bar
     estimates = [10.2, 10.5, 9.8, 10.1, 10.4]
     variances = [0.25, 0.28, 0.24, 0.26, 0.27]
@@ -57,7 +57,7 @@ def test_rubins_rules_variance_invariants():
     assert res.ci_lower < res.pooled_mean < res.ci_upper
 
 
-def test_sensitivity_shift_monotonicity():
+def test_sensitivity_shift_monotonicity() -> None:
     rng = np.random.RandomState(42)
     n = 150
     x = rng.randn(n)
@@ -86,7 +86,7 @@ def test_sensitivity_shift_monotonicity():
     assert estimates[-1] > estimates[0] + 1e-6, "Sensitivity curve must have positive total range"
 
 
-def test_transform_preserves_observed_values():
+def test_transform_preserves_observed_values() -> None:
     """Critical invariant: imputation must not alter observed (non-missing) values."""
     rng = np.random.RandomState(42)
     n = 200
@@ -106,7 +106,7 @@ def test_transform_preserves_observed_values():
     )
 
 
-def test_sensitivity_reports_only_medium_high_risk_columns():
+def test_sensitivity_reports_only_medium_high_risk_columns() -> None:
     """Verify that sensitivity_reports_ is only populated for MEDIUM/HIGH risk columns."""
     rng = np.random.RandomState(42)
     n = 300
@@ -132,7 +132,7 @@ def test_sensitivity_reports_only_medium_high_risk_columns():
         )
 
 
-def test_reproducibility_seed_determinism():
+def test_reproducibility_seed_determinism() -> None:
     """Verify that identical random seeds yield identical imputations across runs."""
     rng = np.random.RandomState(42)
     n = 200

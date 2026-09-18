@@ -20,7 +20,7 @@ from umbra.imputers.mar_chained_equations import MARChainedEquationsImputer
 from umbra.imputers.pattern_mixture import PatternMixtureImputer
 
 
-def test_weak_instrument_regime_fallback():
+def test_weak_instrument_regime_fallback() -> None:
     """Verify that Umbra Auto handles weak instruments by routing to MICE."""
     df_comp, df_obs, true_p = generate_misspecified_dataset(
         "WEAK_INSTRUMENT", n_samples=500, random_state=42
@@ -38,7 +38,7 @@ def test_weak_instrument_regime_fallback():
     assert route in ("mar_chained_equations", "pattern_mixture")
 
 
-def test_exclusion_violation_bias_contrast():
+def test_exclusion_violation_bias_contrast() -> None:
     """Verify that exclusion violation induces bias in Heckman while Pattern Mixture covers."""
     df_comp, df_obs, true_p = generate_misspecified_dataset(
         "EXCLUSION_VIOLATION", n_samples=500, random_state=42
@@ -58,7 +58,7 @@ def test_exclusion_violation_bias_contrast():
     assert np.isfinite(pm_bias)
 
 
-def test_non_normal_student_t_stability():
+def test_non_normal_student_t_stability() -> None:
     """Verify imputers execute without numerical underflow or failure under Student-t(3) errors."""
     df_comp, df_obs, true_p = generate_misspecified_dataset(
         "NON_NORMAL_STUDENT_T", n_samples=500, random_state=42
@@ -71,7 +71,7 @@ def test_non_normal_student_t_stability():
     assert np.all(np.isfinite(df_imp["income"].to_numpy()))
 
 
-def test_u_shaped_tail_dropout_handling():
+def test_u_shaped_tail_dropout_handling() -> None:
     """Verify U-shaped tail dropout is handled without throwing LinAlgError or diverging."""
     df_comp, df_obs, true_p = generate_misspecified_dataset(
         "U_SHAPED_TAILS", n_samples=500, random_state=42

@@ -30,7 +30,7 @@ def benchmarks():
     return generate_benchmark_battery(n_samples=1000, random_state=42)
 
 
-def test_littles_mcar_on_complete_data():
+def test_littles_mcar_on_complete_data() -> None:
     X = np.random.randn(100, 3)
     res = littles_mcar_test(X)
     assert not res.is_rejected
@@ -38,7 +38,7 @@ def test_littles_mcar_on_complete_data():
     assert res.statistic == 0.0
 
 
-def test_littles_mcar_synthetic_battery(benchmarks):
+def test_littles_mcar_synthetic_battery(benchmarks) -> None:
     # MCAR should fail to reject (p > 0.01)
     mcar_res = littles_mcar_test(benchmarks["MCAR"].data_observed)
     assert mcar_res.p_value > 0.01, f"MCAR failed: p={mcar_res.p_value}"
@@ -53,7 +53,7 @@ def test_littles_mcar_synthetic_battery(benchmarks):
     assert mnar_res.p_value < 1e-4
 
 
-def test_pattern_analysis_effect_sizes():
+def test_pattern_analysis_effect_sizes() -> None:
     # Known shift
     x1 = np.zeros(100)
     x2 = np.ones(100)
@@ -70,7 +70,7 @@ def test_pattern_analysis_effect_sizes():
     assert delta > 0.3
 
 
-def test_pattern_analysis_covariate_shift(benchmarks):
+def test_pattern_analysis_covariate_shift(benchmarks) -> None:
     rep = analyze_missingness_patterns(benchmarks["MAR"].data_observed)
     var_rep = rep.variable_reports["income"]
     assert var_rep.n_missing > 0
@@ -78,7 +78,7 @@ def test_pattern_analysis_covariate_shift(benchmarks):
     assert var_rep.n_significant_shifts > 0
 
 
-def test_shadow_variable_finder(benchmarks):
+def test_shadow_variable_finder(benchmarks) -> None:
     # In MNAR_MEDIUM, shadow_z is designed as the instrument
     rep = find_shadow_variables(benchmarks["MNAR_MEDIUM"].data_observed, target_column="income")
     assert len(rep.candidates) > 0
@@ -88,7 +88,7 @@ def test_shadow_variable_finder(benchmarks):
     assert best.is_promising_candidate
 
 
-def test_mnar_risk_scoring(benchmarks):
+def test_mnar_risk_scoring(benchmarks) -> None:
     # MCAR with generic name
     df_mcar = benchmarks["MCAR"].data_observed.rename(columns={"income": "target_feature"})
     rep_mcar = assess_mnar_risk(df_mcar, target_col="target_feature")
@@ -107,7 +107,7 @@ def test_mnar_risk_scoring(benchmarks):
     assert all_reports["income"].risk_level == "HIGH"
 
 
-def test_littles_mcar_performance_vectorized():
+def test_littles_mcar_performance_vectorized() -> None:
     """Verify Little's MCAR test on N=5000, p=8 completes within 15 seconds."""
     import time
 
@@ -130,7 +130,7 @@ def test_littles_mcar_performance_vectorized():
     assert elapsed < 15.0, f"Little's test on N=5000 took {elapsed:.2f}s, expected < 15s"
 
 
-def test_littles_mcar_to_json(tmp_path):
+def test_littles_mcar_to_json(tmp_path) -> None:
     X = np.random.randn(50, 3)
     X[0:5, 0] = np.nan
     res = littles_mcar_test(X)
@@ -147,7 +147,7 @@ def test_littles_mcar_to_json(tmp_path):
     assert '"statistic"' in out_file.read_text(encoding="utf-8")
 
 
-def test_first_stage_f_stat_zero_residual():
+def test_first_stage_f_stat_zero_residual() -> None:
     # If Z perfectly predicts R, ssr_unres == 0
     R = np.array([0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0])
     Z = R.copy()  # perfect predictor
@@ -157,7 +157,7 @@ def test_first_stage_f_stat_zero_residual():
     assert np.isfinite(f_stat)
 
 
-def test_tail_dependency_all_nan_covariate():
+def test_tail_dependency_all_nan_covariate() -> None:
     rng = np.random.RandomState(42)
     n = 100
     df = pd.DataFrame(
@@ -175,7 +175,7 @@ def test_tail_dependency_all_nan_covariate():
     assert np.isfinite(tail_ratio)
 
 
-def test_sensitivity_grid_non_overlapping_plausible_range():
+def test_sensitivity_grid_non_overlapping_plausible_range() -> None:
     df = pd.DataFrame(
         {
             "y": [1.0, 2.0, np.nan, 4.0, 5.0, np.nan, 7.0, 8.0],
@@ -188,7 +188,7 @@ def test_sensitivity_grid_non_overlapping_plausible_range():
     assert np.isfinite(report.uncertainty_spread)
 
 
-def test_littles_mcar_summary():
+def test_littles_mcar_summary() -> None:
     X = np.random.randn(50, 3)
     X[0:5, 0] = np.nan
     res = littles_mcar_test(X)
@@ -197,7 +197,7 @@ def test_littles_mcar_summary():
     assert "Chi-squared Statistic" in summary_text
 
 
-def test_covariate_shift_categorical_summary():
+def test_covariate_shift_categorical_summary() -> None:
     from umbra.diagnostics.pattern_analysis import CovariateShift
 
     shift = CovariateShift(
