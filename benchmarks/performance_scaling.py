@@ -1,3 +1,4 @@
+from typing import cast, Any
 """
 Runtime & Memory Performance Scaling Benchmarks for Umbra.
 
@@ -63,7 +64,7 @@ def benchmark_runtime_vs_n(
         row = {"N": n, "p": n_features, "missing_rate": missing_rate}
         for name, imp in methods.items():
             t0 = time.perf_counter()
-            imp.fit_transform(df)
+            cast(Any, imp).fit_transform(df)
             elapsed = time.perf_counter() - t0
             row[name] = round(elapsed, 4)
 
@@ -110,7 +111,7 @@ def benchmark_runtime_vs_dimension(
         row = {"N": n_samples, "p": p, "missing_rate": missing_rate}
         for name, imp in methods.items():
             t0 = time.perf_counter()
-            imp.fit_transform(df)
+            cast(Any, imp).fit_transform(df)
             elapsed = time.perf_counter() - t0
             row[name] = round(elapsed, 4)
 

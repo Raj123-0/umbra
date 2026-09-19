@@ -160,7 +160,7 @@ def evaluate_strategy_on_misspecification(
     df_comp: pd.DataFrame,
     df_obs: pd.DataFrame,
     true_params: Dict[str, Any],
-) -> Dict[str, float]:
+) -> Dict[str, Any]:
     """Fit imputer and measure downstream inference accuracy and coverage."""
     mask = df_obs["income"].isna()
     y_true = df_comp["income"].to_numpy()
@@ -315,7 +315,7 @@ def format_misspecification_markdown(df_res: pd.DataFrame) -> str:
     return "\n".join(lines)
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Run Umbra model misspecification battery.")
     parser.add_argument(
         "--replications", type=int, default=5, help="Number of replications per regime."

@@ -31,7 +31,9 @@ from umbra.diagnostics.pattern_analysis import analyze_missingness_patterns  # n
 from umbra.diagnostics.shadow_variable_finder import find_shadow_variables  # noqa: E402
 
 
-def route_full(mcar, patterns, shadow_rep, risk_rep) -> str:
+from typing import Any
+
+def route_full(mcar: Any, patterns: Any, shadow_rep: Any, risk_rep: Any) -> str:
     """Full Umbra routing decision."""
     has_instrument = (
         shadow_rep.best_candidate is not None
@@ -52,7 +54,7 @@ def route_full(mcar, patterns, shadow_rep, risk_rep) -> str:
         return "mar_mice"
 
 
-def route_no_shadow(mcar, patterns, shadow_rep, risk_rep) -> str:
+def route_no_shadow(mcar: Any, patterns: Any, shadow_rep: Any, risk_rep: Any) -> str:
     """Ablation 1: Shadow variable finder disabled."""
     r_lvl = risk_rep.risk_level.upper()
     if r_lvl in ["HIGH", "VERY_HIGH", "MEDIUM"]:
@@ -63,7 +65,7 @@ def route_no_shadow(mcar, patterns, shadow_rep, risk_rep) -> str:
         return "mar_mice"
 
 
-def route_no_tail(mcar, patterns, shadow_rep, risk_rep) -> str:
+def route_no_tail(mcar: Any, patterns: Any, shadow_rep: Any, risk_rep: Any) -> str:
     """Ablation 2: Tail concentration diagnostics disabled."""
     has_instrument = (
         shadow_rep.best_candidate is not None
@@ -83,7 +85,7 @@ def route_no_tail(mcar, patterns, shadow_rep, risk_rep) -> str:
         return "mar_mice"
 
 
-def route_mcar_only(mcar, patterns, shadow_rep, risk_rep) -> str:
+def route_mcar_only(mcar: Any, patterns: Any, shadow_rep: Any, risk_rep: Any) -> str:
     """Ablation 3: Little's MCAR test only."""
     if mcar.p_value > 0.05:
         return "mcar_mice"
@@ -91,7 +93,7 @@ def route_mcar_only(mcar, patterns, shadow_rep, risk_rep) -> str:
         return "mar_mice"
 
 
-def route_always_mar(mcar, patterns, shadow_rep, risk_rep) -> str:
+def route_always_mar(mcar: Any, patterns: Any, shadow_rep: Any, risk_rep: Any) -> str:
     """Ablation 4: Static baseline (standard practice)."""
     return "mar_mice"
 
@@ -205,7 +207,7 @@ def run_ablation_study(
     return df_results
 
 
-def format_ablation_markdown(df_res: pd.DataFrame, out_path: Path):
+def format_ablation_markdown(df_res: pd.DataFrame, out_path: Path) -> None:
     lines = [
         "# Umbra Diagnostic Architecture Ablation Study",
         "",

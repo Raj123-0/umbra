@@ -1,3 +1,4 @@
+from typing import cast, Any
 """
 Unit tests for scikit-learn API compatibility.
 """
@@ -18,11 +19,11 @@ from umbra.imputers.pattern_mixture import PatternMixtureImputer
 
 
 @pytest.fixture(scope="module")
-def benchmarks():
+def benchmarks() -> dict:
     return generate_benchmark_battery(n_samples=1000, random_state=42)
 
 
-def test_umbra_imputer_fit_transform(benchmarks) -> None:
+def test_umbra_imputer_fit_transform(benchmarks: dict) -> None:
     data = benchmarks["MAR"].data_observed.copy()
     imputer = UmbraImputer(strategy="mar", random_state=42)
     imputer.fit(data)
@@ -32,7 +33,7 @@ def test_umbra_imputer_fit_transform(benchmarks) -> None:
     assert len(res) == len(data)
 
 
-def test_umbra_imputer_auto_strategy(benchmarks) -> None:
+def test_umbra_imputer_auto_strategy(benchmarks: dict) -> None:
     data = benchmarks["MNAR_MEDIUM"].data_observed.copy()
     imputer = UmbraImputer(
         strategy="auto",
@@ -48,7 +49,7 @@ def test_umbra_imputer_auto_strategy(benchmarks) -> None:
     assert imputer.get_sensitivity("income") is not None
 
 
-def test_pipeline_integration(benchmarks) -> None:
+def test_pipeline_integration(benchmarks: dict) -> None:
     data = benchmarks["MNAR_LOW"].data_observed.copy()
     y = np.random.randn(len(data))
 
@@ -103,9 +104,9 @@ def test_sub_imputers_not_fitted_error() -> None:
     ]
     for imp in imputers:
         with pytest.raises(NotFittedError):
-            imp.transform(X_dummy)
+            cast(Any, imp).transform(X_dummy)
         with pytest.raises(NotFittedError):
-            imp.get_feature_names_out()
+            cast(Any, imp).get_feature_names_out()
 
 
 def test_feature_dimension_mismatch_error() -> None:
@@ -121,9 +122,9 @@ def test_feature_dimension_mismatch_error() -> None:
     ]
 
     for est in estimators:
-        est.fit(df_fit)
+        cast(Any, est).fit(df_fit)
         with pytest.raises(ValueError, match="is expecting 3 features"):
-            est.transform(df_wrong_dim)
+            cast(Any, est).transform(df_wrong_dim)
 
 
 def test_feature_names_mismatch_error() -> None:
@@ -170,17 +171,17 @@ def test_get_feature_names_out_protocol() -> None:
     for factory in sub_classes:
         # Fit on DataFrame
         sub_imp = factory()
-        sub_imp.fit(df)
-        assert list(sub_imp.get_feature_names_out()) == ["feature_a", "feature_b"]
-        assert list(sub_imp.get_feature_names_out(["c1", "c2"])) == ["c1", "c2"]
+        cast(Any, sub_imp).fit(df)
+        assert list(cast(Any, sub_imp).get_feature_names_out()) == ["feature_a", "feature_b"]
+        assert list(cast(Any, sub_imp).get_feature_names_out(["c1", "c2"])) == ["c1", "c2"]
         with pytest.raises(ValueError, match="input_features should have length equal"):
-            sub_imp.get_feature_names_out(["too_short"])
+            cast(Any, sub_imp).get_feature_names_out(["too_short"])
 
         # Fit on array
         sub_arr = factory()
-        sub_arr.fit(arr)
+        cast(Any, sub_arr).fit(arr)
         assert not hasattr(sub_arr, "feature_names_in_")
-        assert list(sub_arr.get_feature_names_out()) == ["x0", "x1"]
+        assert list(cast(Any, sub_arr).get_feature_names_out()) == ["x0", "x1"]
         # Transform array
-        trans_arr = sub_arr.transform(arr)
+        trans_arr = cast(Any, sub_arr).transform(arr)
         assert trans_arr is not None

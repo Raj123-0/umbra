@@ -51,7 +51,7 @@ data_source = st.sidebar.radio(
 
 
 @st.cache_data
-def get_presets():
+def get_presets() -> dict:
     return generate_benchmark_battery(n_samples=1500, random_state=42)
 
 

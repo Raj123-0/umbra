@@ -11,11 +11,11 @@ from umbra.sensitivity.grid_analysis import run_sensitivity_grid
 
 
 @pytest.fixture(scope="module")
-def benchmarks():
+def benchmarks() -> dict:
     return generate_benchmark_battery(n_samples=1000, random_state=42)
 
 
-def test_sensitivity_grid_monotonicity(benchmarks):
+def test_sensitivity_grid_monotonicity(benchmarks: dict) -> None:
     data = benchmarks["MNAR_MEDIUM"].data_observed.copy()
     report = run_sensitivity_grid(
         data, target_column="income", delta_grid=[-1.0, -0.5, 0.0, 0.5, 1.0]
@@ -28,7 +28,7 @@ def test_sensitivity_grid_monotonicity(benchmarks):
     assert report.mar_baseline_estimate > 0.0
 
 
-def test_sensitivity_custom_downstream_evaluator(benchmarks):
+def test_sensitivity_custom_downstream_evaluator(benchmarks: dict) -> None:
     data = benchmarks["MNAR_LOW"].data_observed.copy()
 
     # Custom evaluator: difference in mean between high age and low age
@@ -47,7 +47,7 @@ def test_sensitivity_custom_downstream_evaluator(benchmarks):
     assert "downstream_metric" in report.grid_df.columns
 
 
-def test_sensitivity_report_summary_and_to_dict(benchmarks):
+def test_sensitivity_report_summary_and_to_dict(benchmarks: dict) -> None:
     data = benchmarks["MNAR_LOW"].data_observed.copy()
     report = run_sensitivity_grid(data, target_column="income", delta_grid=[-1.0, 0.0, 1.0])
 
@@ -63,11 +63,11 @@ def test_sensitivity_report_summary_and_to_dict(benchmarks):
     assert isinstance(d["tipping_points"], list)
 
 
-def test_sensitivity_report_with_tipping_points():
+def test_sensitivity_report_with_tipping_points() -> None:
     df = pd.DataFrame({"y": [1.0, -1.0, 2.0, -2.0, np.nan, np.nan], "x": [1, 2, 3, 4, 5, 6]})
 
     # Downstream evaluator that flips sign
-    def flipper(d):
+    def flipper(d: pd.DataFrame) -> float:
         return float(d["y"].mean())
 
     report = run_sensitivity_grid(

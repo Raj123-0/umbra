@@ -5,6 +5,7 @@ Unit tests for Umbra diagnostics module.
 import numpy as np
 import pandas as pd
 import pytest
+from typing import Any
 
 from scripts.build_synthetic_benchmarks import generate_benchmark_battery
 from umbra.diagnostics.mcar_test import littles_mcar_test
@@ -26,7 +27,7 @@ from umbra.sensitivity.grid_analysis import run_sensitivity_grid
 
 
 @pytest.fixture(scope="module")
-def benchmarks():
+def benchmarks() -> dict:
     return generate_benchmark_battery(n_samples=1000, random_state=42)
 
 
@@ -38,7 +39,7 @@ def test_littles_mcar_on_complete_data() -> None:
     assert res.statistic == 0.0
 
 
-def test_littles_mcar_synthetic_battery(benchmarks) -> None:
+def test_littles_mcar_synthetic_battery(benchmarks: dict) -> None:
     # MCAR should fail to reject (p > 0.01)
     mcar_res = littles_mcar_test(benchmarks["MCAR"].data_observed)
     assert mcar_res.p_value > 0.01, f"MCAR failed: p={mcar_res.p_value}"
@@ -70,7 +71,7 @@ def test_pattern_analysis_effect_sizes() -> None:
     assert delta > 0.3
 
 
-def test_pattern_analysis_covariate_shift(benchmarks) -> None:
+def test_pattern_analysis_covariate_shift(benchmarks: dict) -> None:
     rep = analyze_missingness_patterns(benchmarks["MAR"].data_observed)
     var_rep = rep.variable_reports["income"]
     assert var_rep.n_missing > 0
@@ -78,7 +79,7 @@ def test_pattern_analysis_covariate_shift(benchmarks) -> None:
     assert var_rep.n_significant_shifts > 0
 
 
-def test_shadow_variable_finder(benchmarks) -> None:
+def test_shadow_variable_finder(benchmarks: dict) -> None:
     # In MNAR_MEDIUM, shadow_z is designed as the instrument
     rep = find_shadow_variables(benchmarks["MNAR_MEDIUM"].data_observed, target_column="income")
     assert len(rep.candidates) > 0
@@ -88,7 +89,7 @@ def test_shadow_variable_finder(benchmarks) -> None:
     assert best.is_promising_candidate
 
 
-def test_mnar_risk_scoring(benchmarks) -> None:
+def test_mnar_risk_scoring(benchmarks: dict) -> None:
     # MCAR with generic name
     df_mcar = benchmarks["MCAR"].data_observed.rename(columns={"income": "target_feature"})
     rep_mcar = assess_mnar_risk(df_mcar, target_col="target_feature")
@@ -130,7 +131,7 @@ def test_littles_mcar_performance_vectorized() -> None:
     assert elapsed < 15.0, f"Little's test on N=5000 took {elapsed:.2f}s, expected < 15s"
 
 
-def test_littles_mcar_to_json(tmp_path) -> None:
+def test_littles_mcar_to_json(tmp_path: Any) -> None:
     X = np.random.randn(50, 3)
     X[0:5, 0] = np.nan
     res = littles_mcar_test(X)
