@@ -1,4 +1,3 @@
-
 """
 Observational & Semi-Synthetic Benchmark Suite for Umbra.
 

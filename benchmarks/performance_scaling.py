@@ -1,4 +1,3 @@
-
 """
 Runtime & Memory Performance Scaling Benchmarks for Umbra.
 
