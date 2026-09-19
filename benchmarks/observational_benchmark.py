@@ -20,7 +20,7 @@ import argparse
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
 import numpy as np
 import pandas as pd
@@ -301,7 +301,7 @@ def run_observational_benchmark(
     # 1. CPS Wage
     if "cps" in datasets:
         obs_res, comp_res = load_cps_wage(split="both")
-        df_obs, df_comp = obs_res.copy(), comp_res.copy()  # type: ignore[union-attr]
+        df_obs, df_comp = cast(pd.DataFrame, obs_res).copy(), cast(pd.DataFrame, comp_res).copy()
         if quick and len(df_obs) > 600:
             df_obs = df_obs.iloc[:600].copy()
             df_comp = df_comp.iloc[:600].copy()
@@ -318,7 +318,7 @@ def run_observational_benchmark(
     # 2. NHANES Biomarkers
     if "nhanes" in datasets:
         obs_res, comp_res = load_nhanes_biomarkers(split="both")
-        df_obs, df_comp = obs_res.copy(), comp_res.copy()  # type: ignore[union-attr]
+        df_obs, df_comp = cast(pd.DataFrame, obs_res).copy(), cast(pd.DataFrame, comp_res).copy()
         if quick and len(df_obs) > 600:
             df_obs = df_obs.iloc[:600].copy()
             df_comp = df_comp.iloc[:600].copy()
@@ -335,7 +335,7 @@ def run_observational_benchmark(
     # 3. California Housing
     if "california" in datasets:
         obs_res, comp_res = load_california_housing(split="both")
-        df_obs, df_comp = obs_res.copy(), comp_res.copy()  # type: ignore[union-attr]
+        df_obs, df_comp = cast(pd.DataFrame, obs_res).copy(), cast(pd.DataFrame, comp_res).copy()
         if quick and len(df_obs) > 600:
             df_obs = df_obs.iloc[:600].copy()
             df_comp = df_comp.iloc[:600].copy()
@@ -352,7 +352,7 @@ def run_observational_benchmark(
     # 4. Clinical Trial Attrition
     if "clinical" in datasets:
         obs_res, comp_res = load_clinical_trial_attrition(split="both")
-        df_obs, df_comp = obs_res.copy(), comp_res.copy()  # type: ignore[union-attr]
+        df_obs, df_comp = cast(pd.DataFrame, obs_res).copy(), cast(pd.DataFrame, comp_res).copy()
         if quick and len(df_obs) > 600:
             df_obs = df_obs.iloc[:600].copy()
             df_comp = df_comp.iloc[:600].copy()

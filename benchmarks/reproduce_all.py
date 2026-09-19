@@ -22,7 +22,7 @@ from scripts.generate_figures import generate_all_figures
 from umbra import __version__ as umbra_ver
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
         description="Reproduce all Umbra benchmarks, leaderboards, and figures."
     )

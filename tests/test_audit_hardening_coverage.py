@@ -2,6 +2,8 @@
 Targeted tests for remaining edge cases to achieve >92% test coverage.
 """
 
+from typing import Any
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -125,7 +127,7 @@ def test_heckman_edge_cases() -> None:
     assert res_arr is not None
 
 
-def test_sensitivity_edge_cases(tmp_path) -> None:
+def test_sensitivity_edge_cases(tmp_path: Any) -> None:
     rng = np.random.RandomState(42)
     n = 100
     df = pd.DataFrame({"x": rng.randn(n), "y": rng.randn(n), "outcome": rng.randn(n)})
@@ -157,7 +159,7 @@ def test_sensitivity_edge_cases(tmp_path) -> None:
     assert rep2 is not None
 
 
-def test_diagnostic_report_summary_and_export(tmp_path) -> None:
+def test_diagnostic_report_summary_and_export(tmp_path: Any) -> None:
     rng = np.random.RandomState(42)
     n = 60
     df = pd.DataFrame({"x": rng.randn(n), "income": rng.randn(n)})

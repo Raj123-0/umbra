@@ -114,7 +114,7 @@ def run_full_benchmark_suite(
 def _df_to_markdown(df: pd.DataFrame, index: bool = True) -> str:
     """Format DataFrame as a clean Markdown table with fallback for environments lacking tabulate."""
     try:
-        return df.to_markdown(index=index)
+        return str(df.to_markdown(index=index))
     except Exception:
         df_copy = df.copy()
         if index:
@@ -140,7 +140,7 @@ def format_markdown_leaderboard(
     scaling_n: pd.DataFrame,
     scaling_p: pd.DataFrame,
     out_path: Path,
-):
+) -> None:
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     n_samples = summaries[0].n_samples if summaries else 2500
     n_replications = summaries[0].n_replications if summaries else 20

@@ -14,11 +14,11 @@ from umbra.imputers.pattern_mixture import PatternMixtureImputer
 
 
 @pytest.fixture(scope="module")
-def benchmarks():
+def benchmarks() -> dict:
     return generate_benchmark_battery(n_samples=1000, random_state=42)
 
 
-def test_mar_chained_equations(benchmarks) -> None:
+def test_mar_chained_equations(benchmarks: dict) -> None:
     data = benchmarks["MAR"].data_observed.copy()
     assert data["income"].isna().any()
 
@@ -36,7 +36,7 @@ def test_mar_chained_equations(benchmarks) -> None:
     assert not br_res.isna().any().any()
 
 
-def test_heckman_selection_imputer(benchmarks) -> None:
+def test_heckman_selection_imputer(benchmarks: dict) -> None:
     bench = benchmarks["MNAR_MEDIUM"]
     data = bench.data_observed.copy()
     obs_mean = data["income"].mean()
@@ -59,7 +59,7 @@ def test_heckman_selection_imputer(benchmarks) -> None:
     )
 
 
-def test_pattern_mixture_delta_shift(benchmarks) -> None:
+def test_pattern_mixture_delta_shift(benchmarks: dict) -> None:
     data = benchmarks["MNAR_LOW"].data_observed.copy()
 
     pm_base = PatternMixtureImputer(delta=0.0, target_cols=["income"], random_state=42)

@@ -13,11 +13,11 @@ from umbra.diagnostics.report import UmbraDiagnosticReport
 
 
 @pytest.fixture(scope="module")
-def benchmarks():
+def benchmarks() -> dict:
     return generate_benchmark_battery(n_samples=600, random_state=42)
 
 
-def test_diagnose_mcar(benchmarks) -> None:
+def test_diagnose_mcar(benchmarks: dict) -> None:
     df_mcar = benchmarks["MCAR"].data_observed.copy()
     report = umbra.diagnose(df_mcar, target_cols=["income"])
 
@@ -55,7 +55,7 @@ def test_diagnose_mcar(benchmarks) -> None:
     assert "Umbra Diagnostic Audit" in html
 
 
-def test_diagnose_mnar_with_sensitivity(benchmarks) -> None:
+def test_diagnose_mnar_with_sensitivity(benchmarks: dict) -> None:
     df_mnar = benchmarks["MNAR_HIGH"].data_observed.copy()
     report = umbra.diagnose(
         df_mnar,
