@@ -1,4 +1,4 @@
-from typing import cast
+
 """
 Observational & Semi-Synthetic Benchmark Suite for Umbra.
 
@@ -21,7 +21,7 @@ import argparse
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
 import numpy as np
 import pandas as pd

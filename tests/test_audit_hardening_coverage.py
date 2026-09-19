@@ -2,10 +2,11 @@
 Targeted tests for remaining edge cases to achieve >92% test coverage.
 """
 
+from typing import Any
+
 import numpy as np
 import pandas as pd
 import pytest
-from typing import Any
 
 from umbra.api import UmbraImputer
 from umbra.diagnostics.report import diagnose_report

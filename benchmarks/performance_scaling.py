@@ -1,4 +1,4 @@
-from typing import cast, Any
+
 """
 Runtime & Memory Performance Scaling Benchmarks for Umbra.
 
@@ -10,7 +10,7 @@ Benchmarks computation time as a function of:
 """
 
 import time
-from typing import List, Optional
+from typing import Any, List, Optional, cast
 
 import numpy as np
 import pandas as pd

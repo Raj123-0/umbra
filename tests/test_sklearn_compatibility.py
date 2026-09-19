@@ -1,7 +1,9 @@
-from typing import cast, Any
+
 """
 Unit tests for scikit-learn API compatibility.
 """
+
+from typing import Any, cast
 
 import numpy as np
 import pandas as pd

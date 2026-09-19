@@ -15,7 +15,7 @@ Outputs results and markdown table to `benchmarks/ablation_results.md`.
 import sys
 import time
 from pathlib import Path
-from typing import Dict
+from typing import Any, Dict
 
 import pandas as pd
 
@@ -24,14 +24,13 @@ root_dir = Path(__file__).resolve().parent.parent
 if str(root_dir) not in sys.path:
     sys.path.insert(0, str(root_dir))
 
+
 from benchmarks.dgps import generate_simulation_dataset  # noqa: E402
 from umbra.diagnostics.mcar_test import littles_mcar_test  # noqa: E402
 from umbra.diagnostics.mnar_risk_score import assess_mnar_risk  # noqa: E402
 from umbra.diagnostics.pattern_analysis import analyze_missingness_patterns  # noqa: E402
 from umbra.diagnostics.shadow_variable_finder import find_shadow_variables  # noqa: E402
 
-
-from typing import Any
 
 def route_full(mcar: Any, patterns: Any, shadow_rep: Any, risk_rep: Any) -> str:
     """Full Umbra routing decision."""

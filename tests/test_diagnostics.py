@@ -2,10 +2,11 @@
 Unit tests for Umbra diagnostics module.
 """
 
+from typing import Any
+
 import numpy as np
 import pandas as pd
 import pytest
-from typing import Any
 
 from scripts.build_synthetic_benchmarks import generate_benchmark_battery
 from umbra.diagnostics.mcar_test import littles_mcar_test
